@@ -1,34 +1,29 @@
 #include <iostream>
 
-int ackermann(int m, int n)
-{
+using namespace std;
+
+int ackermann(int m, int n) {
     if (m == 0) {
         return n + 1;
-    } else if (n == 0) {
-        return ackermann(m - 1, 1);
+    } else if (m > 0 && n == 0) {
+        return ackermann(m-1, 11);
     } else {
-        return ackermann(m - 1, ackermann(m, n - 1));
+        return ackermann(m-1, ackermann(m, n-1));
     }
 }
 
-int main()
-{
-    std::cout << "Programa Ackermann" << std::endl;
-
+int main() {
+    cout << "Programa Ackermann" << endl;
     while (true) {
-        std::cout << "Digite os parâmetros m e n para calcular A(m, n) ou -1 para abortar a execução" << std::endl;
-
+        cout << "Digite os parametros m e n para calcular A(m, n) ou -1 para abortar a execucao" << endl;
         int m, n;
-        std::cin >> m;
-
+        cin >> m;
         if (m < 0) {
             break;
         }
-
-        std::cin >> n;
-
-        std::cout << "A(" << m << ", " << n << ") = " << ackermann(m, n) << std::endl;
+        cin >> n;
+        int result = ackermann(m, n);
+        cout << "A(" << m << ", " << n << ") = " << result << endl;
     }
-
     return 0;
 }
