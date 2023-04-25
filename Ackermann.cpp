@@ -1,29 +1,29 @@
-#include <iostream>
+#include <stdio.h>
 
-using namespace std;
-
-int ackermann(int m, int n) {
-    if (m == 0) {
-        return n + 1;
-    } else if (m > 0 && n == 0) {
-        return ackermann(m-1, 1);
-    } else {
-        return ackermann(m-1, ackermann(m, n-1));
-    }
-}
+int ackermann(int m, int n);
 
 int main() {
-    cout << "Programa Ackermann" << endl;
-    while (true) {
-        cout << "Digite os parametros m e n para calcular A(m, n) ou -1 para abortar a execucao" << endl;
-        int m, n;
-        cin >> m;
-        if (m < 0) {
-            break;
-        }
-        cin >> n;
-        int result = ackermann(m, n);
-        cout << "A(" << m << ", " << n << ") = " << result << endl;
-    }
+
+    int m, n;
+
+    printf("Digite o valor m: ");
+    scanf("%d", &m);
+
+    printf("Digite o valor n: ");
+    scanf("%d", &n);
+
+    int result = ackermann(m, n);
+
+    printf("Resultado: %d\n", result);
+
     return 0;
+}
+
+int ackermann(int m, int n) {
+    if (m == 0)
+        return n + 1;
+    else if (n == 0)
+        return ackermann(m - 1, 1);
+    else
+        return ackermann(m - 1, ackermann(m, n - 1));
 }
