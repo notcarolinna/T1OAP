@@ -1,5 +1,5 @@
+.globl main
 .text
-	.globl main
 
 main:
 	# Print m_message
@@ -24,35 +24,66 @@ main:
 	
 	# Save in Stack
 	addi $sp, $sp, -12
-	lw $ra, 0($sp) # 0 - address
-	lw $s0, 4($sp) # 4 - m
-	lw $s1, 8($sp) # 8 - n
-	
+	sw $ra, 0($sp) # 0 - return address
+	sw $s0, 4($sp) # 4 - m
+	sw $s1, 8($sp) # 8 - n
+
 	# Jump and Link
 	jal ackermann
 
-    # Restore from Stack
-    lw $s1, 8($sp) # 8 - n
-    lw $s0, 4($sp) # 4 - m
-    lw $ra, 0($sp) # 0 - return adress
-    addi $sp, $sp, 12
+	# Restore from Stack	
+	lw $s1, 8($sp) # 8 - n
+	lw $s0, 4($sp) # 4 - m
+	lw $ra, 0($sp) # 0 - return address
+	addi $sp, $sp, 12
 
-    # Result
-    li $v0, 4
-    la $a0, results
-    syscall
+	# Result
+	move $s0, $v0 # armazena o resultado em $s0
+	li $v0, 4
+	la $a0, results
+	syscall
 
-    # Exit
-    end:
-	li $v0, 10
+	li $v0, 1
+	move $a0, $s0 # carrega o resultado para $a0
+	syscall
+
+	li $v0, 10 # Encerra o programa
 	syscall
 	
 ackermann:
+	# Save registers
+	addi $sp, $sp, -12
+	sw $ra, 0($sp) # 0 - return address
+	sw $s0, 4($sp) # 4 - m
+	sw $s1, 8($sp) # 8 - n
 
-	
-	
+	# Check base cases
+	bne $s0, $zero, elseif
+	addi $v0, $s1, 1 # if m == 0, return n+1
+	j done
 
+	elseif:
+	bne $s1, $zero, else 
+	addi $s0, $s0, -4 # if n==0, m!=0, return m-1
+	li $s1, 1
+	jal ackermann # return ackermann(m=1,1)
+	j done
 
+	else:
+	addi $s1, $s1, -4 # n - 1
+	move $s0, $a0
+	jal ackermann # v0 = ackermann(m, n-1)
+	addi $a0, $s0, -4
+	move $a1, $v0
+	jal ackermann # return ackermann(m-1, ackermann(m, n-1))
+
+	# Restore registers
+	done:
+	lw $ra, 8($sp) # 8 - return address
+	lw $s1, 4($sp) # 4 - n
+	lw $s0, 0($sp) # 0 - m
+	addi $sp, $sp, 12
+	jr $ra
 
 .data
 m_message: .asciiz "Digite o valor m: "
