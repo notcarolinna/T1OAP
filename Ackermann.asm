@@ -64,18 +64,20 @@ ackermann:
 
 	elseif:
 	bne $s1, $zero, else 
-	addi $s0, $s0, -4 # if n==0, m!=0, return m-1
+	addi $s0, $s0, -1 # if n==0, m!=0, return m-1
 	li $s1, 1
 	jal ackermann # return ackermann(m=1,1)
 	j done
 
 	else:
-	addi $s1, $s1, -4 # n - 1
-	move $s0, $a0
+	addi $s1, $s1, -1 # n - 1
+	move $s2, $s0
 	jal ackermann # v0 = ackermann(m, n-1)
-	addi $a0, $s0, -4
-	move $a1, $v0
+	move $a0, $v0
+	move $a1, $s2
+	addi $s0, $s0, -1 # m - 1
 	jal ackermann # return ackermann(m-1, ackermann(m, n-1))
+
 
 	# Restore registers
 	done:
