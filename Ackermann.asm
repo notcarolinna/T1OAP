@@ -78,7 +78,6 @@ ackermann:
 	addi $s0, $s0, -1 # m - 1
 	jal ackermann # return ackermann(m-1, ackermann(m, n-1))
 
-
 	# Restore registers
 	done:
 	lw $ra, 8($sp) # 8 - return address
