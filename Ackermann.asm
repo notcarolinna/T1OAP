@@ -2,25 +2,24 @@
 	.globl main
 
 main:
-	# Print scan m
+	# Print scan 
 	li $v0, 4
-	la $a0, m_message
+	la $a0, message
 	syscall
 	
-	# Scan terminal
+	# Scan m
 	li $v0, 5
 	syscall
+	move $t3, $v0
 	move $s0, $v0
+	bltz $s0, end
 	
-	# Print scan n
-	li $v0, 4
-	la $a0, n_message
-	syscall
-	
-	# Scan terminal
+	# Scan n
 	li $v0, 5
 	syscall
 	move $s1, $v0
+	move $t4, $v0
+	bltz $s1, end
 	
 	# Save in Stack
 	addi $sp, $sp, -12
@@ -38,15 +37,36 @@ main:
 	move $s2, $v0
 	
 	# Print results string
-	li $v0, 4
-	la $a0, results
+	#li $v0, 4
+	#la $a0, results
+	#syscall
+	
+	# Print Result
+	move $t2, $v0		# Pega o resultado da função de Ackermann e coloca em t2
+	la $a0, A
+	li $v0, 4		# Imprime a " A( "
+	syscall 
+
+	move $a0, $t3
+	li $v0, 1		# Print m
+	syscall 
+
+	la $a0, p2
+	li $v0, 4		# Imprime a " ,  "
+	syscall 
+
+	move $a0, $t4
+	li $v0, 1		# Print n
+	syscall 
+
+	la $a0, p3
+	li $v0, 4		# Imprime a " ) =  "
+	syscall 
+
+	li $v0, 1
+	move $a0, $s2 # Resultado
 	syscall
 	
-	# Print int result
-	li $v0, 1
-	move $a0, $s2
-	syscall
-
 end:
 	# Finish program
 	li $v0, 10
@@ -112,9 +132,10 @@ ackermann:
 	
 	jr $ra
 	
-
 .data
 
-m_message: .asciiz "Digite o valor m ou -1 para abortar a execução:\n "
-n_message: .asciiz "Digite o valor n: "
-results: .asciiz "Resultado: "
+message: .asciiz "Digite os parâmetros m e n para calcular A(m, n) ou -1 para abortar a execução \n"
+A:	.asciiz "A("
+p2:	.asciiz ", "
+p3:	.asciiz ") = "
+results: .asciiz " "
