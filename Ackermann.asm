@@ -42,25 +42,24 @@ main:
 	#syscall
 	
 	# Print Result
-	move $t2, $v0		# Pega o resultado da função de Ackermann e coloca em t2
 	la $a0, A
-	li $v0, 4		# Imprime a " A( "
+	li $v0, 4		# Print " A( "
 	syscall 
 
-	move $a0, $t3
 	li $v0, 1		# Print m
+	move $a0, $t3
 	syscall 
 
 	la $a0, p2
-	li $v0, 4		# Imprime a " ,  "
+	li $v0, 4		# Print " ,  "
 	syscall 
 
-	move $a0, $t4
 	li $v0, 1		# Print n
+	move $a0, $t4
 	syscall 
 
 	la $a0, p3
-	li $v0, 4		# Imprime a " ) =  "
+	li $v0, 4		# Print " ) =  "
 	syscall 
 
 	li $v0, 1
